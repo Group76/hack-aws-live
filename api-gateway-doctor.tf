@@ -1,8 +1,8 @@
-resource "aws_apigatewayv2_integration" "integration_lb_doctor_auth" {
+resource "aws_apigatewayv2_integration" "integration_lb_doctor" {
   api_id           = aws_apigatewayv2_api.api_gateway.id
-  description      = "Api gateway for doctor_auth load balancer"
+  description      = "Api gateway for doctor load balancer"
   integration_type = "HTTP_PROXY"
-  integration_uri  = aws_lb_listener.doctor_auth.arn
+  integration_uri  = aws_lb_listener.doctor.arn
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.vpc_link.id
@@ -15,44 +15,44 @@ resource "aws_apigatewayv2_integration" "integration_lb_doctor_auth" {
 
   depends_on = [ 
     aws_apigatewayv2_vpc_link.vpc_link,
-    aws_lb.doctor_auth,
+    aws_lb.doctor,
     aws_apigatewayv2_api.api_gateway            
   ]
 }
 
-resource "aws_apigatewayv2_route" "create_doctor_auth_route" {
-  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor_auth]
+resource "aws_apigatewayv2_route" "create_doctor_route" {
+  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor]
   api_id             = aws_apigatewayv2_api.api_gateway.id
   route_key          = "POST /v1/user"
-  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor_auth.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor.id}"
 }
 
-resource "aws_apigatewayv2_route" "update_doctor_auth_route" {
-  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor_auth]
+resource "aws_apigatewayv2_route" "update_doctor_route" {
+  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor]
   api_id             = aws_apigatewayv2_api.api_gateway.id
   route_key          = "PUT /v1/user"
-  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor_auth.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor.id}"
   authorization_type = "CUSTOM"
   authorizer_id      = aws_apigatewayv2_authorizer.doctor_jwt_auth.id
 }
 
-resource "aws_apigatewayv2_route" "get_doctor_auth_route" {
-  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor_auth]
+resource "aws_apigatewayv2_route" "get_doctor_route" {
+  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor]
   api_id             = aws_apigatewayv2_api.api_gateway.id
   route_key          = "GET /v1/user"
-  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor_auth.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor.id}"
   authorization_type = "CUSTOM"
   authorizer_id      = aws_apigatewayv2_authorizer.doctor_jwt_auth.id
 }
 
 resource "aws_apigatewayv2_route" "get_token_doctor" {
-  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor_auth]
+  depends_on         = [aws_apigatewayv2_integration.integration_lb_doctor]
   api_id             = aws_apigatewayv2_api.api_gateway.id
   route_key          = "POST /v1/auth"
-  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor_auth.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_lb_doctor.id}"
 }
 
-resource "aws_apigatewayv2_stage" "doctor_auth_stage" {
+resource "aws_apigatewayv2_stage" "doctor_stage" {
   api_id = aws_apigatewayv2_api.api_gateway.id
   name   = "doctor"
   auto_deploy = true
@@ -83,6 +83,6 @@ resource "aws_apigatewayv2_stage" "doctor_auth_stage" {
   }
 }
 
-output "doctor_auth_endpoint" {
-  value = aws_apigatewayv2_stage.doctor_auth_stage.invoke_url
+output "doctor_endpoint" {
+  value = aws_apigatewayv2_stage.doctor_stage.invoke_url
 }

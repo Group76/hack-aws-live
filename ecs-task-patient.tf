@@ -1,5 +1,5 @@
-resource "aws_ecs_task_definition" "task-doctor_auth" {
-  family                   = "doctor_auth"
+resource "aws_ecs_task_definition" "task-patient" {
+  family                   = "patient-api"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -8,8 +8,8 @@ resource "aws_ecs_task_definition" "task-doctor_auth" {
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   container_definitions    = jsonencode([
     {
-      name   = "doctor_auth"
-      image  = "doctor-auth-ecr-repository:latest"
+      name   = "patient-api"
+      image  = "patient-ecr-repository:latest"
       cpu    = 256
       memory = 512
       networkMode = "awsvpc",
@@ -24,9 +24,9 @@ resource "aws_ecs_task_definition" "task-doctor_auth" {
         logDriver = "awslogs"
         options = {
           "awslogs-create-group": "true",
-          "awslogs-group"         = aws_cloudwatch_log_group.ecs_doctor_auth_api.name
+          "awslogs-group"         = aws_cloudwatch_log_group.ecs_patient_api.name
           "awslogs-region"        = var.region
-          "awslogs-stream-prefix" = "ecs/doctor-auth-api"
+          "awslogs-stream-prefix" = "ecs/patient-api"
         }
       }
     }

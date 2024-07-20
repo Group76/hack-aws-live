@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "ecr-doctor-auth" {
-  name = "doctor-auth-ecr-repository"
+resource "aws_ecr_repository" "ecr-doctor" {
+  name = "doctor-ecr-repository"
   image_tag_mutability = "MUTABLE"
   force_delete = true
 

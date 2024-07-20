@@ -1,11 +1,11 @@
-resource "aws_cloudwatch_log_group" "ecs_patient_auth_api" {
-  name = "/ecs/patitent-auth-api"
+resource "aws_cloudwatch_log_group" "ecs_patient_api" {
+  name = "/ecs/patient-auth-api"
   retention_in_days = 1
 }
 
-resource "aws_cloudwatch_log_stream" "ecs_patient_auth_api" {
-  name           = "ecs/patitent-auth-api"
-  log_group_name = aws_cloudwatch_log_group.ecs_patient_auth_api.name
+resource "aws_cloudwatch_log_stream" "ecs_patient_api" {
+  name           = "ecs/patient-api"
+  log_group_name = aws_cloudwatch_log_group.ecs_patient_api.name
 }
 
 resource "aws_cloudwatch_log_group" "api_gw_logs" {
@@ -18,14 +18,14 @@ resource "aws_cloudwatch_log_stream" "api_gw_logs" {
   log_group_name = aws_cloudwatch_log_group.api_gw_logs.name
 }
 
-resource "aws_cloudwatch_log_group" "ecs_doctor_auth_api" {
-  name = "/ecs/doctor-auth-api"
+resource "aws_cloudwatch_log_group" "ecs_doctor_api" {
+  name = "/ecs/doctor-api"
   retention_in_days = 1
 }
 
-resource "aws_cloudwatch_log_stream" "ecs_doctor_auth_api" {
-  name           = "ecs/doctor-auth-api"
-  log_group_name = aws_cloudwatch_log_group.ecs_doctor_auth_api.name
+resource "aws_cloudwatch_log_stream" "ecs_doctor_api" {
+  name           = "ecs/doctor-api"
+  log_group_name = aws_cloudwatch_log_group.ecs_doctor_api.name
 }
 
 resource "aws_cloudwatch_log_group" "ecs_portal_api" {

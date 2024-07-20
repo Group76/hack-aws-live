@@ -1,20 +1,20 @@
-resource "aws_lambda_function" "patient_auth_function" {
-  filename         = "patient_auth_lambda.zip"
+resource "aws_lambda_function" "patient_function" {
+  filename         = "patient_lambda.zip"
   function_name    = "AuthFunction"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.12"
-  source_code_hash = filebase64sha256("patient_auth_lambda.zip")
+  source_code_hash = filebase64sha256("patient_lambda.zip")
   layers = [aws_lambda_layer_version.hack_auth_layer.arn]
 }
 
-resource "aws_lambda_function" "doctor_auth_function" {
-  filename         = "doctor_auth_lambda.zip"
+resource "aws_lambda_function" "doctor_function" {
+  filename         = "doctor_lambda.zip"
   function_name    = "AuthFunction"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.12"
-  source_code_hash = filebase64sha256("doctor_auth_lambda.zip")
+  source_code_hash = filebase64sha256("doctor_lambda.zip")
   layers = [aws_lambda_layer_version.hack_auth_layer.arn]
 }
 

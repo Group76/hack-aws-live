@@ -12,7 +12,7 @@ resource "aws_apigatewayv2_api" "api_gateway" {
 resource "aws_apigatewayv2_authorizer" "patient_jwt_auth" {
   api_id                            = aws_apigatewayv2_api.api_gateway.id
   authorizer_type                   = "REQUEST"
-  authorizer_uri                    = aws_lambda_function.patient_auth_function.invoke_arn
+  authorizer_uri                    = aws_lambda_function.patient_function.invoke_arn
   identity_sources                  = ["$request.header.Authorization"]
   name                              = "jwt-authorizer"
   authorizer_payload_format_version = "2.0"
@@ -21,7 +21,7 @@ resource "aws_apigatewayv2_authorizer" "patient_jwt_auth" {
 resource "aws_apigatewayv2_authorizer" "doctor_jwt_auth" {
   api_id                            = aws_apigatewayv2_api.api_gateway.id
   authorizer_type                   = "REQUEST"
-  authorizer_uri                    = aws_lambda_function.doctor_auth_function.invoke_arn
+  authorizer_uri                    = aws_lambda_function.doctor_function.invoke_arn
   identity_sources                  = ["$request.header.Authorization"]
   name                              = "jwt-authorizer"
   authorizer_payload_format_version = "2.0"
@@ -30,7 +30,7 @@ resource "aws_apigatewayv2_authorizer" "doctor_jwt_auth" {
 resource "aws_lambda_permission" "allow_api_gw_invoke_authorizer_patient" {  
   statement_id  = "allowInvokeFromAPIGatewayAuthorizer"  
   action        = "lambda:InvokeFunction"  
-  function_name = aws_lambda_function.patient_auth_function.function_name  
+  function_name = aws_lambda_function.patient_function.function_name  
   principal     = "apigateway.amazonaws.com"  
   source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/authorizers/${aws_apigatewayv2_authorizer.patient_jwt_auth.id}"  
 }
@@ -38,7 +38,7 @@ resource "aws_lambda_permission" "allow_api_gw_invoke_authorizer_patient" {
 resource "aws_lambda_permission" "allow_api_gw_invoke_authorizer_doctor" {  
   statement_id  = "allowInvokeFromAPIGatewayAuthorizer"  
   action        = "lambda:InvokeFunction"  
-  function_name = aws_lambda_function.doctor_auth_function.function_name  
+  function_name = aws_lambda_function.doctor_function.function_name  
   principal     = "apigateway.amazonaws.com"  
   source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/authorizers/${aws_apigatewayv2_authorizer.doctor_jwt_auth.id}"  
 }

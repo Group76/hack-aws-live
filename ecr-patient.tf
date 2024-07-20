@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "ecr-patient-auth" {
-  name = "patient-auth-ecr-repository"
+resource "aws_ecr_repository" "ecr-patient" {
+  name = "patient-ecr-repository"
   image_tag_mutability = "MUTABLE"
   force_delete = true
 
